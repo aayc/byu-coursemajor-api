@@ -3,7 +3,7 @@
 Interested in running analytics or making web services to help people schedule classes/find their dream major/find out what minors they can get?  Let this API do the heavy lifting for you.
 
 ## Accessible & Free to Use
-Anyone can query the server for course or major information.
+Anyone can query the server (temporarily at `https://whispering-taiga-29713.herokuapp.com`) for course or major information.  [Try me](https://whispering-taiga-29713.herokuapp.com/courses/codes)
 
 ## Up-to-date
 Course/major data is updated nightly from BYU's database.
