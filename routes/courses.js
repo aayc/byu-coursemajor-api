@@ -23,7 +23,7 @@ router.get('/names', (req, res, next) => res.send(courses.map(c => c.code + " - 
 router.post('/search', function (req, res, next) {
 	searchResults = courses
 	if (req.body.code) searchResults = searchResults.filter(c => c.code == req.body.code)
-	if (req.body.name) searchResults = searchResults.filter(c => c.code + "- " + c.name == req.body.name)
+	if (req.body.name) searchResults = searchResults.filter(c => c.code + " - " + c.name == req.body.name)
 	if (req.body.codes) searchResults = searchResults.filter(c => req.body.codes.some(co => c.code == co))
 	if (req.body.names) searchResults = searchResults.filter(c => req.body.names.some(na => c.name == na))
 	if (req.body.available) searchResults = searchResults.filter(c => isAvailable(c.available))
