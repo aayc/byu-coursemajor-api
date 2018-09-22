@@ -26,14 +26,23 @@ router.post('/search', function (req, res, next) {
 	if (req.body.name) searchResults = searchResults.filter(c => c.code + " - " + c.name == req.body.name)
 	if (req.body.codes) searchResults = searchResults.filter(c => req.body.codes.some(co => c.code == co))
 	if (req.body.names) searchResults = searchResults.filter(c => req.body.names.some(na => c.name == na))
-	if (req.body.available) searchResults = searchResults.filter(c => isAvailable(c.available))
+	if (req.body.hasOwnProperty("available")) {
+		searchResults = searchResults.map(c => { 
+			c.sections = c.sections.filter(sec => isAvailable(sec.seats) == req.body.available); 
+			return c
+		})
+	}
 	if (req.body.time) {
 		// Passed in as [["MTWThFSSu", "12:00pm", "1:00pm"], ["MW", "12:00pm", "1:00pm"]]
-		searchResults = searchResults.filter(c => c.sections.some(sec => doesTimeOverlap([sec.days, sec.startTime, sec.endTime], req.body.time)))
-								     .map(c => { c.sections = c.sections.filter(sec => doesTimeOverlap([sec.days, sec.startTime, sec.endTime], req.body.time))})
+		searchResults = searchResults.map(c => { 
+			c.sections = c.sections.filter(sec => doesTimeOverlap([sec.days, sec.startTime, sec.endTime], req.body.time))
+			return c
+		})
 	}
 	res.send(searchResults)
 })
+
+// Add "by prerequisite"
 
 function doesTimeOverlap(range_a, range_b) {
 	// Check if days overlap, then check if times overlap
@@ -41,7 +50,7 @@ function doesTimeOverlap(range_a, range_b) {
 
 function isAvailable (availabilityString) {
 	let parts = availabilityString.split("/")
-	return Number(parts[0]) < Number(parts[1])
+	return Number(parts[0].trim()) < Number(parts[1].trim())
 }
 
 function unique (ls) {

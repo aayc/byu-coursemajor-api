@@ -112,4 +112,39 @@ describe('Search functionality', () => {
     		})
     )
   )
+
+  describe('by availability true', () =>
+    it('should return classes with available sections only', () =>
+    	chai.request(app)
+    		.post('/courses/search')
+    		.set('content-type', 'application/json')
+        .send({available: true})
+    		.then((res) => {
+    			expect(res).to.have.status(200);
+    			expect(res).to.be.json;
+    			expect(res.body).to.be.an('array')
+    			expect(res.body.filter(c => 
+    				c.sections.every(s => Number(s.seats.split("/")[0]) < Number(s.seats.split("/")[1]))))
+    			.to.have.lengthOf(res.body.length)
+    	})
+    )
+  )
+
+  describe('by availability false', () =>
+    it('should return classes with full sections only', () =>
+    	chai.request(app)
+    		.post('/courses/search')
+    		.set('content-type', 'application/json')
+        .send({available: false})
+    		.then((res) => {
+    			//console.log(res.body.map(c => c.sections.map(s => s.seats)))
+    			expect(res).to.have.status(200);
+    			expect(res).to.be.json;
+    			expect(res.body).to.be.an('array')
+    			expect(res.body.filter(c => 
+    				c.sections.every(s => Number(s.seats.split("/")[0]) == Number(s.seats.split("/")[1]))))
+    			.to.have.lengthOf(res.body.length)
+    	})
+    )
+  )
 })
