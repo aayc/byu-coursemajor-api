@@ -72,7 +72,7 @@ async function scrapeMajors (fromFile = false, acc = [], startIx = 1) {
 	fs.writeFile("programs-data.json", JSON.stringify(programs, null, 2), (err) => {
 		if (err) console.log("error: " + err)
 	})
-	console.logs("Success");
+	console.log("Success");
 }
  
 
