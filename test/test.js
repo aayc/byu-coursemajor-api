@@ -38,6 +38,21 @@ describe('Basic GET requests', () => {
 
 describe('Search functionality', () => {
 
+  describe('all results', () =>
+    it('should return lots of classes', () =>
+      chai.request(app)
+                .post('/courses/search')
+                .set('content-type', 'application/json')
+      .send({})
+              .then((res) => {
+                      expect(res).to.have.status(200);
+                      expect(res).to.be.json;
+                      expect(res.body).to.be.an('array');
+                      expect(res.body).to.have.lengthOf.above(300)
+              })
+    )
+  )
+
   describe('by code', () =>
     it('should return one class: ACC 200', () =>
     	chai.request(app)

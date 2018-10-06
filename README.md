@@ -3,7 +3,7 @@
 Interested in running analytics or making web services to help people schedule classes/find their dream major/find out what minors they can get?  Let this API do the heavy lifting for you.
 
 ## Accessible & Free to Use
-Anyone can query the server (temporarily at `https://whispering-taiga-29713.herokuapp.com`) for course or major information.  [Try me](https://whispering-taiga-29713.herokuapp.com/courses/codes)
+Anyone can query the server (temporarily at `https://byu-courses.herokuapp.com`) for course or major information.  [Try me](https://byu-courses.herokuapp.com/courses/codes).  Because of free-tier Heroku hosting, there may be some delay in retrieving the data the first time.
 
 ## Up-to-date
 Course/major data is updated nightly from BYU's database.
@@ -29,6 +29,7 @@ Parameter | Description | Result Format
 `{ codes: ["ACC 200", "A HTG 100"]}` | Search by course codes | `[Course Object, Course Object]`
 `{ names: ["ACC 200 - ...", "A HTG 100 - ..."]}` | Search by course names | `[Course Object, Course Object]`
 `{ available: true/false }` | Search all open sections | `[Course Objects with only available sections listed]`
+`{ }` | Search all courses | `[Course Object..]` (all courses)
 
 # Result Object Formats
 

@@ -32,19 +32,57 @@ router.post('/search', function (req, res, next) {
 			return c
 		})
 	}
-	if (req.body.time) {
-		// Passed in as [["MTWThFSSu", "12:00pm", "1:00pm"], ["MW", "12:00pm", "1:00pm"]]
+	// TODO
+	/*if (req.body.times) {
+		// Passed in as { days: [[]], start-time: ["1:00pm"], end-time: ["2:00pm"] }
 		searchResults = searchResults.map(c => { 
-			c.sections = c.sections.filter(sec => doesTimeOverlap([sec.days, sec.startTime, sec.endTime], req.body.time))
+			c.sections = c.sections.filter(sec => doesTimeOverlap(sec, req.body.times))
 			return c
 		})
-	}
+	}*/
 	res.send(searchResults)
 })
 
 // Add "by prerequisite"
 
-function doesTimeOverlap(range_a, range_b) {
+// TODO unfinished
+function doesTimeOverlap(section, times) {
+	getMinuteCount = (day, time_s) => { 
+		dayIx = ["M", "T", "W", "Th", "F", "S", "Su"].indexOf(day)
+		hasPM = time_s.indexOf("pm") != -1
+		hours = Number(time_s.match(/^(\d+)/)[1])
+		hours += hasPM && hours < 12 ? 12 : 0
+		hours -= !hasPM && hours == 12 ? 12 : 0
+		minutes = Number(time_s.match(/:(\d+)/)[1]);
+		return dayIx * 1440 + hours * 60 + minutes
+	}
+
+	getClassTimeRange = (c) => {
+		blocks = c["days"]
+		start = c["start-time"]
+		end = c["end-time"]
+
+		if (start[0] == "TBA" || end[0] == "TBA") return null
+		if (blocks.length != start.length) console.log("ERROR: faulty assumptions (scheduler.js 18)")
+
+		ranges = blocks.map((days, k) => 
+			days.map(day => [getMinuteCount(day, start[k]), getMinuteCount(day, end[k])]))
+		return ranges
+	}
+
+	/*convertToClassFormat = (t) => {
+		t.map(r_ls => {
+			// r_ls : [["MWFS", "3:00pm", "5:00pm"]] => [[minute, minute for monday], [minute, minute for Wedneday], [minute, minute for ]]
+			
+
+			let days = r_ls[0].match(/(M|Th|W|T|F|S|Su)/g)
+			let times = [r_ls[1]]
+			
+		})
+	}*/
+
+	
+
 	// Check if days overlap, then check if times overlap
 }
 
